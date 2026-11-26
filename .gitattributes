@@ -1,0 +1,3 @@
+# The wrapper scripts keep their line endings on every system.
+mvnw text eol=lf
+*.cmd text eol=crlf
