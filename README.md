@@ -1,5 +1,7 @@
 # Aurora Auto
 
+[![CI](https://github.com/aluiziodeveloper/aurora-auto/actions/workflows/ci.yml/badge.svg)](https://github.com/aluiziodeveloper/aurora-auto/actions/workflows/ci.yml)
+
 Claims assistance with agents for Aurora Seguros, a fictional car insurer. The domain is written
 with DDD and TDD in Java 25; the language model sits at the edge, behind a port, and runs locally
 with Ollama. Built with Spring Boot 4.2 and Spring AI 2.1.
@@ -26,6 +28,7 @@ DEV_UID=$(id -u) DEV_GID=$(id -g) docker compose build dev
 ## Checks
 
 `verify` compiles with Error Prone and NullAway, runs the tests and checks the formatting.
+CI runs the same checks on every pull request, in the same image as the `dev` container.
 Code in a `@NullMarked` package must declare `@Nullable` wherever null is allowed.
 
 ```bash
@@ -40,6 +43,7 @@ docker compose exec dev ./mvnw -q -ntp verify           # compiles, tests and ch
 | `assistance` | The assistance application, where the agents will live |
 | `docker/dev.Dockerfile` | The development container (JDK 25, Maven 3.9.16) |
 | `compose.yaml` | Local services |
+| `.github/workflows/ci.yml` | CI: format, lint, test and build jobs |
 | `mvnw`, `.mvn/` | Maven Wrapper (Maven 3.9.16), the build's default options and the compiler JVM flags for Error Prone |
 
 ## License

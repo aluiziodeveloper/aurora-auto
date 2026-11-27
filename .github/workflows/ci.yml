@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Every job runs in the same image as the dev container, so CI uses the same JDK and Maven.
+env:
+  # The image points MAVEN_CONFIG at /root/.m2, and mvnw would pass it to Maven as an argument.
+  MAVEN_CONFIG: ""
+  # Keeps Maven's local repository under HOME, next to the wrapper's download, in one cached folder.
+  MAVEN_OPTS: -Dmaven.repo.local=/github/home/.m2/repository
+
+jobs:
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    container: maven:3.9.16-eclipse-temurin-25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/cache/restore@v6
+        with:
+          path: ~/.m2
+          key: maven-${{ hashFiles('**/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-
+      - name: Check formatting (Spotless)
+        run: ./mvnw -q -ntp spotless:check
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    container: maven:3.9.16-eclipse-temurin-25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/cache/restore@v6
+        with:
+          path: ~/.m2
+          key: maven-${{ hashFiles('**/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-
+      - name: Compile with Error Prone and NullAway
+        run: ./mvnw -q -ntp -DskipTests compile
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    container: maven:3.9.16-eclipse-temurin-25
+    steps:
+      - uses: actions/checkout@v7
+      # Only this job saves the cache: verify downloads everything the other jobs need,
+      # and four jobs saving the same key would race for it.
+      - uses: actions/cache@v6
+        with:
+          path: ~/.m2
+          key: maven-${{ hashFiles('**/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-
+      - name: Verify
+        run: ./mvnw -q -ntp verify
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    container: maven:3.9.16-eclipse-temurin-25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/cache/restore@v6
+        with:
+          path: ~/.m2
+          key: maven-${{ hashFiles('**/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-
+      - name: Package
+        run: ./mvnw -q -ntp -DskipTests package
