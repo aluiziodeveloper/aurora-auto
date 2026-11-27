@@ -23,6 +23,16 @@ belong to you. If your user has other IDs (`id -u`, `id -g`), build with them:
 DEV_UID=$(id -u) DEV_GID=$(id -g) docker compose build dev
 ```
 
+## Checks
+
+`verify` compiles with Error Prone and NullAway, runs the tests and checks the formatting.
+Code in a `@NullMarked` package must declare `@Nullable` wherever null is allowed.
+
+```bash
+docker compose exec dev ./mvnw -q -ntp spotless:apply   # formats the code
+docker compose exec dev ./mvnw -q -ntp verify           # compiles, tests and checks everything
+```
+
 ## Layout
 
 | Path | Contents |
@@ -30,7 +40,7 @@ DEV_UID=$(id -u) DEV_GID=$(id -g) docker compose build dev
 | `assistance` | The assistance application, where the agents will live |
 | `docker/dev.Dockerfile` | The development container (JDK 25, Maven 3.9.16) |
 | `compose.yaml` | Local services |
-| `mvnw`, `.mvn/` | Maven Wrapper (Maven 3.9.16) and the build's default options |
+| `mvnw`, `.mvn/` | Maven Wrapper (Maven 3.9.16), the build's default options and the compiler JVM flags for Error Prone |
 
 ## License
 
