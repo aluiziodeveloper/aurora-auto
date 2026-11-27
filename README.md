@@ -36,6 +36,21 @@ docker compose exec dev ./mvnw -q -ntp spotless:apply   # formats the code
 docker compose exec dev ./mvnw -q -ntp verify           # compiles, tests and checks everything
 ```
 
+## Local services
+
+PostgreSQL 18 with pgvector and Ollama run next to the `dev` container, with no published
+ports: from `dev`, they are `postgres:5432` (database, user and password `aurora`) and
+`http://ollama:11434`. The chat model is `qwen3:8b`.
+
+```bash
+docker compose up -d postgres ollama
+docker compose exec ollama ollama pull qwen3:8b
+```
+
+Ollama gets `OLLAMA_CPUS` CPUs (4 by default). It sizes its thread pool from the host CPUs,
+not from that limit, so every request sends `num_thread` with the same number; `dev` has it
+in `AURORA_OLLAMA_NUM_THREAD`.
+
 ## Workflow
 
 `main` is protected by the ruleset in `.github/ruleset-main.json`: no direct pushes, changes
@@ -63,6 +78,7 @@ GitHub Actions, with titles that pass the same check.
 |---|---|
 | `assistance` | The assistance application, where the agents will live |
 | `docker/dev.Dockerfile` | The development container (JDK 25, Maven 3.9.16) |
+| `docker/postgres/init.sql` | Enables pgvector when the database is created |
 | `compose.yaml` | Local services |
 | `.github/workflows/ci.yml` | CI: format, lint, test and build jobs |
 | `.github/workflows/pr-title.yml` | CI: the pull request title follows Conventional Commits |

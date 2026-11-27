@@ -1,5 +1,9 @@
 name: aurora-auto
 
+# One knob for the Ollama CPUs. Ollama does not read the cgroup limit: it sizes its thread
+# pool from the host CPUs, so every request must send num_thread with the same number.
+x-ollama-cpus: &ollama-cpus ${OLLAMA_CPUS:-4}
+
 services:
   dev:
     build:
@@ -9,11 +13,47 @@ services:
         UID: ${DEV_UID:-1000}
         GID: ${DEV_GID:-1000}
     working_dir: /src
+    environment:
+      AURORA_OLLAMA_NUM_THREAD: *ollama-cpus
     volumes:
       - .:/src
       - m2:/home/dev/.m2
     init: true
     command: sleep infinity
 
+  # No published ports: the dev container reaches each service by its name.
+  postgres:
+    image: pgvector/pgvector:0.8.7-pg18-trixie
+    environment:
+      POSTGRES_DB: aurora
+      POSTGRES_USER: aurora
+      POSTGRES_PASSWORD: aurora
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      # Runs once, when the data volume is empty.
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aurora -d aurora"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  ollama:
+    image: ollama/ollama:0.40.16
+    cpus: *ollama-cpus
+    environment:
+      OLLAMA_KEEP_ALIVE: 30m
+      # One model in memory at a time: qwen3:8b alone takes about 6 GB.
+      OLLAMA_MAX_LOADED_MODELS: "1"
+    volumes:
+      - ollama-models:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
 volumes:
   m2:
+  postgres-data:
+  ollama-models:
