@@ -36,6 +36,27 @@ docker compose exec dev ./mvnw -q -ntp spotless:apply   # formats the code
 docker compose exec dev ./mvnw -q -ntp verify           # compiles, tests and checks everything
 ```
 
+## Workflow
+
+`main` is protected by the ruleset in `.github/ruleset-main.json`: no direct pushes, changes
+only through pull requests, squash merge only, and the checks `Format`, `Lint`, `Test`,
+`Build` and `PR title` must be green. The pull request title follows
+[Conventional Commits](https://www.conventionalcommits.org/) and becomes the commit on `main`.
+
+Every change goes from a branch to `main` with one script, run on the host (it needs `git`
+and `gh`):
+
+```bash
+git switch -c feat/some-change
+# ... edit, test ...
+scripts/pr.sh "feat: add some change"            # commit, push, PR, checks, squash merge
+scripts/pr.sh "feat: add some change" aula-02-01 # same, and tags the merge commit
+```
+
+Check a title before opening the pull request with `scripts/check-pr-title.sh "<title>"`.
+Dependabot (`.github/dependabot.yml`) opens weekly updates for the Maven dependencies and the
+GitHub Actions, with titles that pass the same check.
+
 ## Layout
 
 | Path | Contents |
@@ -44,6 +65,10 @@ docker compose exec dev ./mvnw -q -ntp verify           # compiles, tests and ch
 | `docker/dev.Dockerfile` | The development container (JDK 25, Maven 3.9.16) |
 | `compose.yaml` | Local services |
 | `.github/workflows/ci.yml` | CI: format, lint, test and build jobs |
+| `.github/workflows/pr-title.yml` | CI: the pull request title follows Conventional Commits |
+| `.github/ruleset-main.json` | Protection rules for `main` |
+| `.github/dependabot.yml` | Weekly dependency and action updates |
+| `scripts/` | `pr.sh` (branch to `main`) and `check-pr-title.sh` |
 | `mvnw`, `.mvn/` | Maven Wrapper (Maven 3.9.16), the build's default options and the compiler JVM flags for Error Prone |
 
 ## License
