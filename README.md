@@ -77,6 +77,7 @@ GitHub Actions, with titles that pass the same check.
 | Path | Contents |
 |---|---|
 | `assistance` | The assistance application, where the agents will live |
+| `labs/model-choice` | Lab: which local model calls the Aurora tools right, on CPU ([results](labs/model-choice/README.md)) |
 | `docker/dev.Dockerfile` | The development container (JDK 25, Maven 3.9.16) |
 | `docker/postgres/init.sql` | Enables pgvector when the database is created |
 | `compose.yaml` | Local services |
