@@ -20,6 +20,10 @@
 
   <properties>
     <java.version>25</java.version>
+    <spotless.version>3.12.0</spotless.version>
+    <palantir-java-format.version>2.103.0</palantir-java-format.version>
+    <error-prone.version>2.53.0</error-prone.version>
+    <nullaway.version>0.14.4</nullaway.version>
   </properties>
 
   <modules>
@@ -28,6 +32,52 @@
 
   <build>
     <plugins>
+      <!-- Formatting: spotless:check fails the build on unformatted code, spotless:apply fixes it. -->
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless.version}</version>
+        <configuration>
+          <java>
+            <palantirJavaFormat>
+              <version>${palantir-java-format.version}</version>
+            </palantirJavaFormat>
+            <removeUnusedImports/>
+          </java>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Static analysis while compiling: Error Prone, with NullAway checking @NullMarked code.
+           Any finding at ERROR level stops the build. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <compilerArgs>
+            <arg>-XDcompilePolicy=simple</arg>
+            <arg>--should-stop=ifError=FLOW</arg>
+            <arg>-Xplugin:ErrorProne -Xep:NullAway:ERROR -XepOpt:NullAway:OnlyNullMarked=true</arg>
+          </compilerArgs>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>com.google.errorprone</groupId>
+              <artifactId>error_prone_core</artifactId>
+              <version>${error-prone.version}</version>
+            </path>
+            <path>
+              <groupId>com.uber.nullaway</groupId>
+              <artifactId>nullaway</artifactId>
+              <version>${nullaway.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
       <!-- Exposes each dependency's jar path as a property, such as ${org.mockito:mockito-core:jar}. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
