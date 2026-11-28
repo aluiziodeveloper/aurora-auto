@@ -34,6 +34,7 @@
           { "context": "Lint", "integration_id": 15368 },
           { "context": "Test", "integration_id": 15368 },
           { "context": "Build", "integration_id": 15368 },
+          { "context": "Integration", "integration_id": 15368 },
           { "context": "PR title", "integration_id": 15368 }
         ]
       }

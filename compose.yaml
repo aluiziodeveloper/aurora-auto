@@ -15,9 +15,14 @@ services:
     working_dir: /src
     environment:
       AURORA_OLLAMA_NUM_THREAD: *ollama-cpus
+    # Testcontainers starts its containers through the host's Docker. Whoever reaches this
+    # socket controls that Docker, so only the dev container gets it.
+    group_add:
+      - ${DOCKER_GID:-999}
     volumes:
       - .:/src
       - m2:/home/dev/.m2
+      - /var/run/docker.sock:/var/run/docker.sock
     init: true
     command: sleep infinity
 
