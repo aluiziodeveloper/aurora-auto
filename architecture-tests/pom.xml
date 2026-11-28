@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>br.com.aurora</groupId>
+    <artifactId>aurora-auto</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>architecture-tests</artifactId>
+  <name>Aurora Auto · Architecture tests</name>
+  <description>Rules that every bounded context follows, checked on the compiled classes</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>br.com.aurora</groupId>
+      <artifactId>shared</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>br.com.aurora</groupId>
+      <artifactId>customers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>br.com.aurora</groupId>
+      <artifactId>policy</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.tngtech.archunit</groupId>
+      <artifactId>archunit-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- ArchUnit logs through SLF4J: without a provider, every run prints three warning lines. -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
