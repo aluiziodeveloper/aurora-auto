@@ -30,6 +30,9 @@ DEV_UID=$(id -u) DEV_GID=$(id -g) docker compose build dev
 `verify` compiles with Error Prone and NullAway, runs the tests and checks the formatting.
 CI runs the same checks on every pull request, in the same image as the `dev` container.
 Code in a `@NullMarked` package must declare `@Nullable` wherever null is allowed.
+The `architecture-tests` module checks, with [ArchUnit](https://www.archunit.org/), that every
+`domain` package is plain Java (no Spring, no JPA, no Spring AI) and that a context's domain
+uses no other context's domain, except the shared kernel.
 
 ```bash
 docker compose exec dev ./mvnw -q -ntp spotless:apply   # formats the code
@@ -103,6 +106,10 @@ The decisions are recorded in [`docs/adr`](docs/adr/README.md), the incidents in
 
 | Path | Contents |
 |---|---|
+| `shared` | Shared kernel: value objects every context speaks |
+| `customers` | Customers context: the insured people and their personal data |
+| `policy` | Policy context: policies, vehicles, coverages and deductibles |
+| `architecture-tests` | ArchUnit rules on the compiled classes of every context |
 | `assistance` | The assistance application, where the agents will live |
 | `labs/model-choice` | Lab: which local model calls the Aurora tools right, on CPU ([results](labs/model-choice/README.md)) |
 | `docker/dev.Dockerfile` | The development container (JDK 25, Maven 3.9.16) |
