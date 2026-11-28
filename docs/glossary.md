@@ -12,6 +12,7 @@ lessons use the Portuguese word in parentheses.
 
 | Term | Meaning | First seen |
 |---|---|---|
+| **CPF** (CPF) | `Cpf`: the Brazilian individual taxpayer number, eleven digits, the last two are check digits. Outside the customers context it only appears masked, `***.456.789-**` (RN04) | 03-05 |
 
 ## Build and Java
 
