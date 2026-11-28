@@ -19,7 +19,8 @@ class DomainIsolationTest {
             .resideInAPackage("br.com.aurora..domain..")
             .should()
             .onlyDependOnClassesThat()
-            .resideInAnyPackage("java..", "org.jspecify..", "br.com.aurora..domain..")
+            // javax.crypto is part of the JDK too: the plate pseudonym (RN04) uses its HMAC.
+            .resideInAnyPackage("java..", "javax.crypto..", "org.jspecify..", "br.com.aurora..domain..")
             .because("the domain is plain Java: no Spring, no JPA, no Spring AI (RNF02)");
 
     @ArchTest
