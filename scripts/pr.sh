@@ -56,12 +56,16 @@ done
 gh pr checks "$number" --watch --fail-fast
 
 # 4. Squash merge. Subject and body are explicit, so the commit on main carries
-#    exactly the title and nothing else (no trailers).
-gh pr merge "$number" --squash --delete-branch --subject "$title (#$number)" --body ""
+#    exactly the title and nothing else (no trailers). No --delete-branch: the
+#    repository already deletes the remote branch on merge (delete_branch_on_merge,
+#    lesson 01-06), and asking gh to delete it too races with GitHub (HTTP 404).
+gh pr merge "$number" --squash --subject "$title (#$number)" --body ""
 
-# 5. Bring main up to date and tag the merge commit.
+# 5. Bring main up to date, drop the local branch and tag the merge commit.
+#    -D, not -d: after a squash merge, git does not see the branch as merged.
 git switch "$main"
 git pull --ff-only origin "$main"
+git branch -D "$branch"
 if [[ -n "$tag" ]]; then
   subject="$(git log -1 --format=%s)"
   if [[ "$subject" != "$title (#$number)" ]]; then
