@@ -36,6 +36,27 @@ docker compose exec dev ./mvnw -q -ntp spotless:apply   # formats the code
 docker compose exec dev ./mvnw -q -ntp verify           # compiles, tests and checks everything
 ```
 
+Integration tests (`*IT.java`) start their own containers with
+[Testcontainers](https://testcontainers.com/), so they stay out of the fast `verify` and run
+with the `integration` profile. CI runs them in the `Integration` job.
+
+```bash
+docker compose exec dev ./mvnw -q -ntp -Pintegration verify   # unit and integration tests
+```
+
+The `dev` container reaches the host's Docker through `/var/run/docker.sock`, with the
+socket's group added to its user. That group is `999` by default; if yours is another
+(`stat -c %g /var/run/docker.sock`), recreate `dev` with it:
+
+```bash
+DOCKER_GID=$(stat -c %g /var/run/docker.sock) docker compose up -d dev
+```
+
+To keep it, write `DOCKER_GID=<group>` in a `.env` file next to `compose.yaml` (Git ignores it).
+
+Whoever reaches that socket controls the host's Docker. Each test container publishes a
+random port on the host while it runs, and Testcontainers removes it when the tests end.
+
 ## Local services
 
 PostgreSQL 18 with pgvector and Ollama run next to the `dev` container, with no published
@@ -55,7 +76,7 @@ in `AURORA_OLLAMA_NUM_THREAD`.
 
 `main` is protected by the ruleset in `.github/ruleset-main.json`: no direct pushes, changes
 only through pull requests, squash merge only, and the checks `Format`, `Lint`, `Test`,
-`Build` and `PR title` must be green. The pull request title follows
+`Build`, `Integration` and `PR title` must be green. The pull request title follows
 [Conventional Commits](https://www.conventionalcommits.org/) and becomes the commit on `main`.
 
 Every change goes from a branch to `main` with one script, run on the host (it needs `git`

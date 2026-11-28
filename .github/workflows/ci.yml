@@ -77,3 +77,18 @@ jobs:
           restore-keys: maven-
       - name: Package
         run: ./mvnw -q -ntp -DskipTests package
+
+  integration:
+    name: Integration
+    runs-on: ubuntu-latest
+    container: maven:3.9.16-eclipse-temurin-25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/cache/restore@v6
+        with:
+          path: ~/.m2
+          key: maven-${{ hashFiles('**/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-
+      # The runner mounts its Docker socket into the job container, so Testcontainers finds it.
+      - name: Integration tests (Testcontainers)
+        run: ./mvnw -q -ntp -Pintegration verify
