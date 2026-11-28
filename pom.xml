@@ -33,6 +33,7 @@
     <module>shared</module>
     <module>customers</module>
     <module>policy</module>
+    <module>claims</module>
     <module>architecture-tests</module>
     <module>assistance</module>
     <module>labs/model-choice</module>
