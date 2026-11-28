@@ -26,6 +26,7 @@
     <nullaway.version>0.14.4</nullaway.version>
     <spring-ai.version>2.1.0</spring-ai.version>
     <archunit.version>1.5.1</archunit.version>
+    <jqwik.version>1.10.2</jqwik.version>
   </properties>
 
   <modules>
@@ -58,6 +59,11 @@
         <groupId>com.tngtech.archunit</groupId>
         <artifactId>archunit-junit5</artifactId>
         <version>${archunit.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.jqwik</groupId>
+        <artifactId>jqwik</artifactId>
+        <version>${jqwik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.ai</groupId>

@@ -17,6 +17,7 @@ lessons use the Portuguese word in parentheses.
 | **money** (dinheiro, valor) | `Money`: an amount in reais, always with two decimal places and rounded half-even; never negative, so a subtraction below zero is refused (INC-03). Lives in the shared kernel | 03-07 |
 | **policy number** (número da apólice) | `PolicyNumber`: AUR, the year of issue and a six-digit sequence, such as `AUR-2026-000123` | 03-08 |
 | **coverage period** (vigência) | `CoveragePeriod`: the days the policy is in force, first and last included. A claim is accepted for the date of the event, not of the notice (RN01) | 03-08 |
+| **deductible** (franquia) | `Deductible`: the part of a partial loss the insured pays. It comes off the authorized estimate, and the result is never negative: an estimate at or below it pays nothing, and the claim is registered without indemnity. It does not apply to a total loss (RN05) | 03-09 |
 
 ## Build and Java
 
