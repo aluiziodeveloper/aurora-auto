@@ -20,6 +20,9 @@ lessons use the Portuguese word in parentheses.
 | **deductible** (franquia) | `Deductible`: the part of a partial loss the insured pays. It comes off the authorized estimate, and the result is never negative: an estimate at or below it pays nothing, and the claim is registered without indemnity. It does not apply to a total loss (RN05) | 03-09 |
 | **adjustment factor** (fator de ajuste) | `AdjustmentFactor`: the percentage of the Aurora table value the insured contracted, from 0.80 to 1.20 in whole points (RN09) | 03-10 |
 | **reference value** (valor de referência) | `ReferenceValue`: the Aurora table value times the adjustment factor; the base of the total loss rule (RN08) and of a total loss indemnity (RN09) | 03-10 |
+| **policy** (apólice) | `Policy`: the root of the aggregate with the vehicle, the coverage period, the adjustment factor and the coverages; an entity, identified by its policy number | 03-11 |
+| **coverage** (cobertura) | `Coverage`: what the policy protects against (`CoverageType`: collision, theft, fire, glass, third party), each with its own deductible; `Coverages` is the first-class collection, one coverage per type | 03-11 |
+| **endorsement** (endosso) | `Policy.endorse`: a change to the coverages during the coverage period; the policy stays the same | 03-11 |
 
 ## Build and Java
 
