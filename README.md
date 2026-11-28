@@ -109,6 +109,7 @@ The decisions are recorded in [`docs/adr`](docs/adr/README.md), the incidents in
 | `shared` | Shared kernel: value objects every context speaks |
 | `customers` | Customers context: the insured people and their personal data |
 | `policy` | Policy context: policies, vehicles, coverages and deductibles |
+| `claims` | Claims context: the legacy claims service, being tamed in module 04 (`claims/.../legacy`) |
 | `architecture-tests` | ArchUnit rules on the compiled classes of every context |
 | `assistance` | The assistance application, where the agents will live |
 | `labs/model-choice` | Lab: which local model calls the Aurora tools right, on CPU ([results](labs/model-choice/README.md)) |
