@@ -24,6 +24,23 @@ lessons use the Portuguese word in parentheses.
 | **coverage** (cobertura) | `Coverage`: what the policy protects against (`CoverageType`: collision, theft, fire, glass, third party), each with its own deductible; `Coverages` is the first-class collection, one coverage per type | 03-11 |
 | **endorsement** (endosso) | `Policy.endorse`: a change to the coverages during the coverage period; the policy stays the same | 03-11 |
 
+## Domain design
+
+The modeling terms of module 03: how the domain above is built.
+
+| Term | Meaning | Lesson |
+|---|---|---|
+| **bounded context** (contexto delimitado) | A part of the business with its own model and words; in the code, a Maven module (`customers`, `policy`) | 03-02 |
+| **shared kernel** (núcleo compartilhado) | The small model every context may use: `shared`, with `Money` | 03-02 |
+| **value object** | A type defined by its values, with no identity: immutable, valid from the constructor on (`Cpf`, `Money`) | 03-03 |
+| **entity** (entidade) | A type with an identity that stays while its data changes: `Policy`, by its number | 03-03 |
+| **aggregate** (agregado) | A group that changes as one unit, through its root, which checks the rules of the whole group | 03-03 |
+| **first-class collection** (coleção de primeira classe) | A class that wraps a collection and holds its rules: `Coverages` | 03-03 |
+| **ArchUnit** | The library that tests the dependencies of compiled classes; `architecture-tests` keeps the domain plain Java | 03-04 |
+| **pseudonym** (pseudônimo) | A stand-in that identifies a value without showing it; the plate's is a keyed HMAC | 03-06 |
+| **property-based test** (teste de propriedade) | A test of a rule that must hold for any generated input; jqwik runs 1,000 tries per property | 03-09 |
+| **shrinking** (encolhimento) | jqwik reducing a failing input, step by step, to the smallest one that still fails | 03-09 |
+
 ## Build and Java
 
 | Term | Meaning | First seen |

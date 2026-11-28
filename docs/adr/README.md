@@ -6,3 +6,4 @@ new record supersedes it and the old one says so in its status.
 | ADR | Decision | Status |
 |---|---|---|
 | [0001](0001-toolchain-and-workflow.md) | Toolchain, development environment and workflow | Accepted |
+| [0002](0002-domain-model.md) | The domain model: bounded context modules, value objects, money, the policy aggregate | Accepted |
