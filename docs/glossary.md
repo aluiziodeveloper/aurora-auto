@@ -14,6 +14,7 @@ lessons use the Portuguese word in parentheses.
 |---|---|---|
 | **CPF** (CPF) | `Cpf`: the Brazilian individual taxpayer number, eleven digits, the last two are check digits. Outside the customers context it only appears masked, `***.456.789-**` (RN04) | 03-05 |
 | **license plate** (placa) | `LicensePlate`: the vehicle's plate, kept in the Mercosul format (BRA2E19); an old plate (ABC1234) is converted (ABC1C34). Before the model it becomes a keyed pseudonym, `plate-` and 12 hex digits (RN04) | 03-06 |
+| **money** (dinheiro, valor) | `Money`: an amount in reais, always with two decimal places and rounded half-even; never negative, so a subtraction below zero is refused (INC-03). Lives in the shared kernel | 03-07 |
 
 ## Build and Java
 
