@@ -12,6 +12,9 @@ updates:
     groups:
       maven:
         patterns: ["*"]
+    # Maven itself changes together with the dev and CI image, in a course pull request (ADR 0001).
+    ignore:
+      - dependency-name: org.apache.maven:apache-maven
 
   - package-ecosystem: github-actions
     directory: /

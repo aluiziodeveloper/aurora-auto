@@ -91,7 +91,13 @@ scripts/pr.sh "feat: add some change" aula-02-01 # same, and tags the merge comm
 
 Check a title before opening the pull request with `scripts/check-pr-title.sh "<title>"`.
 Dependabot (`.github/dependabot.yml`) opens weekly updates for the Maven dependencies and the
-GitHub Actions, with titles that pass the same check.
+GitHub Actions, with titles that pass the same check. Maven itself is left out: the Wrapper
+and the `dev` image change together, in one pull request.
+
+## Decisions and incidents
+
+The decisions are recorded in [`docs/adr`](docs/adr/README.md), the incidents in
+[`docs/incidents`](docs/incidents), and the project's words in [`docs/glossary.md`](docs/glossary.md).
 
 ## Layout
 
@@ -102,11 +108,12 @@ GitHub Actions, with titles that pass the same check.
 | `docker/dev.Dockerfile` | The development container (JDK 25, Maven 3.9.16) |
 | `docker/postgres/init.sql` | Enables pgvector when the database is created |
 | `compose.yaml` | Local services |
-| `.github/workflows/ci.yml` | CI: format, lint, test and build jobs |
+| `.github/workflows/ci.yml` | CI: format, lint, test, build and integration jobs |
 | `.github/workflows/pr-title.yml` | CI: the pull request title follows Conventional Commits |
 | `.github/ruleset-main.json` | Protection rules for `main` |
 | `.github/dependabot.yml` | Weekly dependency and action updates |
 | `scripts/` | `pr.sh` (branch to `main`) and `check-pr-title.sh` |
+| `docs/` | Decision records, incident postmortems and the glossary |
 | `mvnw`, `.mvn/` | Maven Wrapper (Maven 3.9.16), the build's default options and the compiler JVM flags for Error Prone |
 
 ## License
