@@ -15,6 +15,8 @@ lessons use the Portuguese word in parentheses.
 | **CPF** (CPF) | `Cpf`: the Brazilian individual taxpayer number, eleven digits, the last two are check digits. Outside the customers context it only appears masked, `***.456.789-**` (RN04) | 03-05 |
 | **license plate** (placa) | `LicensePlate`: the vehicle's plate, kept in the Mercosul format (BRA2E19); an old plate (ABC1234) is converted (ABC1C34). Before the model it becomes a keyed pseudonym, `plate-` and 12 hex digits (RN04) | 03-06 |
 | **money** (dinheiro, valor) | `Money`: an amount in reais, always with two decimal places and rounded half-even; never negative, so a subtraction below zero is refused (INC-03). Lives in the shared kernel | 03-07 |
+| **policy number** (número da apólice) | `PolicyNumber`: AUR, the year of issue and a six-digit sequence, such as `AUR-2026-000123` | 03-08 |
+| **coverage period** (vigência) | `CoveragePeriod`: the days the policy is in force, first and last included. A claim is accepted for the date of the event, not of the notice (RN01) | 03-08 |
 
 ## Build and Java
 
